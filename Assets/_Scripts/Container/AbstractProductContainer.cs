@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace _Scripts.Market
 {
-    public class AbstractProductPool : MonoBehaviour,IProductPool
+    public class AbstractProductContainer : MonoBehaviour,IProductContainer
     {
         private List<Product> _products;
         private int _maxCount;
@@ -22,7 +22,23 @@ namespace _Scripts.Market
         
         public void AddProduct(Product product)
         {
-            _products.Add(product);
+            if (!IsFull())
+            {
+                _products.Add(product);
+            }
+        }
+        
+        public void RomoveProduct(Product product)
+        {
+            _products.Remove(product);
+        }
+        
+        public virtual void SendProductTo(IProductContainer targetContainer)
+        {
+            if (!targetContainer.IsFull())
+            {
+                targetContainer.AddProduct(TakeFirstProduct());
+            }
         }
         
         public bool HasMarketObject()
@@ -43,7 +59,6 @@ namespace _Scripts.Market
                 return null;
             }
             Product product = _products.First();
-            _products.Remove(product);
             return product;
         }
         

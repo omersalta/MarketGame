@@ -1,8 +1,10 @@
 ﻿namespace _Scripts.Market
 {
-    public interface IProductPool
+    public interface IProductContainer
     {
         public void AddProduct(Product product);
+        
+        public void RomoveProduct(Product product);
     
         public bool HasMarketObject();
         

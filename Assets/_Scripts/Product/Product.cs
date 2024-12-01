@@ -4,19 +4,20 @@ using UnityEngine;
 
 public class Product : MonoBehaviour
 {
-    private IProductPool _container;
+    private IProductContainer _container;
+    [SerializeField] private ProductSO _ProductSo;
     
-    // Start is called before the first frame update
-    public IProductPool GetContainer()
+    public ProductSO GetProductSO()
     {
-        return _container;
+        return _ProductSo;
     }
     
-    public void SetContainer(IProductPool container)
+    public void SetContainer(IProductContainer container)
     {
         if (container == null)
         {
             _container = null;
+            Debug.LogError("container is null for product Object");
             return;
         }
         
@@ -26,9 +27,17 @@ public class Product : MonoBehaviour
         }
         else
         {
+            _container?.RomoveProduct(this);
             _container = container;
             _container.AddProduct(this);
         }
+        
+    }
+    
+    // Start is called before the first frame update
+    public IProductContainer GetContainer()
+    {
+        return _container;
     }
     
 }

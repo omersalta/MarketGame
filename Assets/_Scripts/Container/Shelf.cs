@@ -1,6 +1,6 @@
 ﻿namespace _Scripts.Market
 {
-    public class MarketShelf : AbstractProductPool
+    public class Shelf : AbstractProductContainer
     {
         
     }
