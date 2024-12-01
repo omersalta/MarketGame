@@ -5,9 +5,24 @@ namespace _Scripts.Player
 {
     public class PlayerMovement : RigidBodyMovementWithRotation
     {
-        private void Update()
+        protected Vector3 lastMoveDir;
+        
+        protected void Update()
         {
-            OnMove(new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")));
+            //Get Input
+            Vector2 moveDir = GetMovementDirAsNormalized();
+            OnMove(moveDir);
+            
+            if (moveDir != Vector2.zero)
+            {
+                lastMoveDir = moveDir;
+            }
+        }
+
+
+        private Vector2 GetMovementDirAsNormalized()
+        {
+            return new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         }
     }
 }

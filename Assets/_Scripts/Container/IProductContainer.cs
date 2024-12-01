@@ -5,7 +5,7 @@
         public void AddProduct(Product product);
         
         public void RomoveProduct(Product product);
-    
+        
         public bool HasMarketObject();
         
         public bool IsFull();

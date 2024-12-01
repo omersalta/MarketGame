@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class RigidBodyMovementWithRotation : MonoBehaviour
@@ -7,8 +6,8 @@ public class RigidBodyMovementWithRotation : MonoBehaviour
 
     [SerializeField] private float _rotationSpeed;
     
-    [SerializeField] private Rigidbody2D _rigidbody;
-    [SerializeField] private Transform _bodyTransform;
+    [SerializeField] protected Rigidbody2D _rigidbody2D;
+    [SerializeField] protected Transform bodyTransform;
     
     private Vector2 _movementInput;
     private Vector2 _smoothedMovementInput;
@@ -28,16 +27,16 @@ public class RigidBodyMovementWithRotation : MonoBehaviour
             ref _movementInputSmoothVelocity,
             0.1f);
 
-        _rigidbody.velocity = _smoothedMovementInput * _speed;
+        _rigidbody2D.velocity = _smoothedMovementInput * _speed;
     }
 
     private void RotateInDirectionOfInput()
     {
         if (_movementInput != Vector2.zero)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(_bodyTransform.forward, _smoothedMovementInput);
-            Quaternion rotation = Quaternion.RotateTowards(_bodyTransform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
-            _rigidbody.MoveRotation(rotation);
+            Quaternion targetRotation = Quaternion.LookRotation(bodyTransform.forward, _smoothedMovementInput);
+            Quaternion rotation = Quaternion.RotateTowards(bodyTransform.rotation, targetRotation, _rotationSpeed * Time.deltaTime);
+            _rigidbody2D.MoveRotation(rotation);
         }
     }
     

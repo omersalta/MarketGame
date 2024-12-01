@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace _Scripts.Market
 {
-    public class AbstractProductContainer : MonoBehaviour,IProductContainer
+    public abstract class BaseContainer : MonoBehaviour,IProductContainer
     {
         private List<Product> _products;
         private int _maxCount;
@@ -33,6 +33,8 @@ namespace _Scripts.Market
             _products.Remove(product);
         }
         
+        public abstract void Interact(Player.Player player);
+
         public virtual void SendProductTo(IProductContainer targetContainer)
         {
             if (!targetContainer.IsFull())
