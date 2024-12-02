@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace _Scripts.Market
+namespace _Scripts.ContainerSystem
 {
     public class ProductSO : ScriptableObject
     {

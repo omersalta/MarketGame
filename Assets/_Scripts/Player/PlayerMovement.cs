@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace _Scripts.Player
+namespace _Scripts._Player
 {
     public class PlayerMovement : RigidBodyMovementWithRotation
     {

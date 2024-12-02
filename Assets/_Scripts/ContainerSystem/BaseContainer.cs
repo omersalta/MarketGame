@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using _Scripts._Player;
 using UnityEngine;
 
-namespace _Scripts.Market
+namespace _Scripts.ContainerSystem
 {
     public abstract class BaseContainer : MonoBehaviour,IProductContainer
     {
@@ -33,8 +34,6 @@ namespace _Scripts.Market
             _products.Remove(product);
         }
         
-        public abstract void Interact(Player.Player player);
-
         public virtual void SendProductTo(IProductContainer targetContainer)
         {
             if (!targetContainer.IsFull())
@@ -43,7 +42,7 @@ namespace _Scripts.Market
             }
         }
         
-        public bool HasMarketObject()
+        public bool IsEmpty()
         {
             return _products.Count >= 1;
         }

@@ -1,4 +1,4 @@
-﻿namespace _Scripts.Market
+﻿namespace _Scripts.ContainerSystem
 {
     public interface IProductContainer
     {
@@ -6,7 +6,7 @@
         
         public void RomoveProduct(Product product);
         
-        public bool HasMarketObject();
+        public bool IsEmpty();
         
         public bool IsFull();
 
