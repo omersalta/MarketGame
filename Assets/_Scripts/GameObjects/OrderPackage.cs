@@ -1,69 +1,51 @@
-﻿using System.Collections.Generic;
-using _Scripts._Player;
+﻿using System;
+using System.Collections.Generic;
 using _Scripts.ContainerSystem;
 using UnityEngine;
+using UnityEngine.Serialization;
 
-namespace _Scripts
+namespace _Scripts.GameObjects
 {
-    public class OrderPackage : BaseContainer,IHoldable
+    public class OrderPackage : BaseHoldableContainer
     {
-        private bool _hasHolder = false;
+        public List<ProductType> ProductTypes;
         
-        public void Initialize(List<Product> products)
+        private void Start()
         {
-            _hasHolder = false;
-            foreach (var product in products)
+            List<Product> productsInPackage = new List<Product>();
+            
+            if (ProductTypes != null)
             {
-                AddProduct(product);
-            }
-        }
-        
-        public void Interact(Player player)
-        {
-            if (_hasHolder)
-            {
-                Debug.LogWarning("holded already by anyone");
-            }
-            else
-            {
-                OnHold(player);
-            }
-        }
-        
-        public void InteractAlternate(Player player)
-        {
-            if (_hasHolder)
-            {
-                OnDrop(player);
+                foreach (ProductType productType in ProductTypes)
+                {
+                    if (productType.Quantity > 0 && productType.Quantity < int.MaxValue)
+                    {
+                        for (int i = 0; i < productType.Quantity; i++)
+                        {
+                            Product product = ProductSO.SpawnProduct(productType.ProductSO);
+                            product.transform.parent = transform;
+                            product.transform.localPosition = Vector3.zero;
+                            productsInPackage.Add(product);
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogWarning("productType.Quantity is invalid");
+                    }
+                    
+                }
                 
             }
-            else
-            {
-                Debug.LogWarning("there is no holder");
-            }
-        }
-        
-        public void OnSelection()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public bool IsEnable()
-        {
-            return !_hasHolder;
-        }
-        
-        public virtual void OnHold(Player player)
-        {
-            transform.parent = player.transform;
-            //todo maybe local position set to zero
-            _hasHolder = true;
-        }
-        
-        public virtual void OnDrop(Player player)
-        {
-            transform.parent = null;
-            _hasHolder = false;
+                
+            Initialize(productsInPackage.Count,productsInPackage,null);
         }
     }
+    
+    [Serializable]
+    public class ProductType
+    {
+        public ProductSO ProductSO;
+        public int Quantity;
+    }
+    
 }

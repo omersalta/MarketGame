@@ -1,4 +1,5 @@
-﻿using _Scripts._Player;
+﻿using System;
+using _Scripts._Player;
 using _Scripts.ContainerSystem;
 using UnityEngine;
 
@@ -6,6 +7,12 @@ namespace _Scripts
 {
     public class Shelf : BaseContainer,IInteractable
     {
+        [SerializeField] protected int maxCount;
+        
+        private void Start()
+        {
+            Initialize(maxCount,null);
+        }
         public virtual void Interact(Player player)
         {
             var container = player.GetContainer();
@@ -13,9 +20,15 @@ namespace _Scripts
             if (!container.IsEmpty())
             {
                 Product product = container.TakeFirstProduct();
-                container.RomoveProduct(product);
-                AddProduct(product);
-                Debug.Log("product added :" + product.name);
+                if (product != null)
+                {
+                    AddProduct(product);
+                    Debug.Log("product added :" + product.name);
+                }
+                else
+                {
+                    Debug.LogWarning("player has no product");
+                }
             }
             else
             {
@@ -24,16 +37,23 @@ namespace _Scripts
         }
         public virtual void InteractAlternate(Player player)
         {
-            var container = player.GetContainer();
+            var playerContainer = player.GetContainer();
 
-            if (!container.IsFull())
+            if (!playerContainer.IsFull())
             {
                 if (!IsEmpty())
                 {
                     Product product = TakeFirstProduct();
-                    RomoveProduct(product);
-                    container.AddProduct(product);
-                    Debug.Log("product added :" + product.name);
+                    if (product != null)
+                    {
+                        player.GetContainer().AddProduct(product);
+                        Debug.Log("product added :" + product.name);
+                    }
+                    else
+                    {
+                        Debug.LogWarning("Shelf is Empty or something went wrong");
+                    }
+                   
                 }
                 else
                 {
@@ -51,7 +71,7 @@ namespace _Scripts
         }
         public bool IsEnable()
         {
-            return !IsEmpty();
+            return true;
         }
 
 

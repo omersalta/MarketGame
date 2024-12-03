@@ -9,13 +9,18 @@ namespace _Scripts._Player
         private IInteractable _selectedInteractable;
         public UnityEvent<IInteractable> OnSelectionInteractable; 
         
-        private IHoldable _currentHoldable;
-        public IHoldable CurrentHoldable => _currentHoldable;
+        private IHoldable _currentHolded;
+        public IHoldable CurrentHolded => _currentHolded;
         
         [SerializeField] private LayerMask _interactionLayers;
         
-        [SerializeField] private BaseContainer _holdingPointContainer; 
-        
+        [SerializeField] private PlayerHandContainer _holdingPointContainer;
+
+        private void Start()
+        {
+            _holdingPointContainer.Initialize(2);
+        }
+
         private void CheckInteraction()
         {
             float interactDistance = 1f;
@@ -27,6 +32,7 @@ namespace _Scripts._Player
                 if (raycastHit2D.transform.TryGetComponent(out IInteractable container))
                 {
                     SetSelectedInteractable(container);
+                    Debug.Log(container);
                 }
             }
             
@@ -34,6 +40,7 @@ namespace _Scripts._Player
             {
                 _selectedInteractable = interactable;
                 OnSelectionInteractable.Invoke(_selectedInteractable);
+                
             }
             
         }
@@ -51,6 +58,27 @@ namespace _Scripts._Player
             if (Input.GetKeyDown(KeyCode.F))
             {
                 InteractionAlternate();
+            }
+            
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                Drop();
+            }
+        }
+        
+        private void Drop()
+        {
+            if (CurrentHolded != null)
+            {
+                if (CurrentHolded.HasHolder())
+                {
+                    CurrentHolded.SetHolder(null);
+                    _currentHolded = null;
+                }
+                else
+                {
+                    Debug.LogWarning("CurrentHolded already has not a holder");
+                }
             }
         }
         
@@ -75,27 +103,20 @@ namespace _Scripts._Player
                 }
             }
         }
-
-        public void SetHoldingItem (IHoldable item)
-        {
-            if (CurrentHoldable == null)
-            {
-                _currentHoldable = item;
-            }
-            else
-            {
-                Debug.Log("player already has a item");
-            }
-        }
-
-        
         
         public BaseContainer GetContainer ()
         {
-            var currentHoldedContainer = CurrentHoldable as BaseContainer;
-            if (currentHoldedContainer != null)
+            if (CurrentHolded != null)
             {
-                return currentHoldedContainer;
+                var currentHoldedContainer = CurrentHolded as BaseContainer;
+                if (currentHoldedContainer != null)
+                {
+                    return currentHoldedContainer;
+                }
+                else
+                {
+                    return _holdingPointContainer;
+                }
             }
             else
             {
@@ -104,6 +125,9 @@ namespace _Scripts._Player
             
         }
         
-        
+        public Transform GetHolderAsParent()
+        {
+            return _holdingPointContainer.transform;
+        }
     }
 }

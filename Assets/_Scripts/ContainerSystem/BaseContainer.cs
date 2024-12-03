@@ -9,8 +9,8 @@ namespace _Scripts.ContainerSystem
     {
         private List<Product> _products;
         private int _maxCount;
-
-        public void Initialize(int maxCount)
+        
+        public void Initialize(int maxCount, List<Product> productsToAdd)
         {
             if (maxCount <= 0)
             {
@@ -19,32 +19,52 @@ namespace _Scripts.ContainerSystem
             }
             _maxCount = maxCount;
             _products = new List<Product>(_maxCount);
+            
+            if (productsToAdd != null)
+            {
+                if (productsToAdd.Count > 0)
+                {
+                    foreach (var product in productsToAdd)
+                    {
+                        _products.Add(product);
+                        product.SetContainer(this);
+                    }
+                }
+            }
         }
         
         public void AddProduct(Product product)
         {
             if (!IsFull())
             {
+                IProductContainer container = product.GetContainer();
+                if (container != null)
+                {
+                    product.GetContainer().RomoveProduct(product);
+                }
+                
+                //Adding
                 _products.Add(product);
+                product.transform.parent = transform;
+                product.transform.localPosition = Vector3.zero;
+                product.transform.localRotation = Quaternion.identity;
+            }
+            else
+            {
+                Debug.LogWarning("container is Full");
             }
         }
+        
         
         public void RomoveProduct(Product product)
         {
             _products.Remove(product);
-        }
-        
-        public virtual void SendProductTo(IProductContainer targetContainer)
-        {
-            if (!targetContainer.IsFull())
-            {
-                targetContainer.AddProduct(TakeFirstProduct());
-            }
+            Debug.LogWarning(product + "removed");
         }
         
         public bool IsEmpty()
         {
-            return _products.Count >= 1;
+            return TakeFirstProduct() == null;
         }
         
         public bool IsFull()
@@ -54,13 +74,20 @@ namespace _Scripts.ContainerSystem
         
         public Product TakeFirstProduct()
         {
-            if (_products.Count <= 0)
+            if (_products != null)
             {
-                Debug.LogWarning("there is no product");
-                return null;
+                if (_products.Count <= 0)
+                {
+                    Debug.LogWarning("there is no product");
+                    return null;
+                }
+                else
+                {
+                    Product product = _products.First();
+                    return product;
+                }
             }
-            Product product = _products.First();
-            return product;
+            return null;
         }
         
         public void ClearMarketObjects()

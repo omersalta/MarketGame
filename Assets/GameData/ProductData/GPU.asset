@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d83c454806924841bf377a0892acbb10, type: 3}
+  m_Name: GPU
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 3527889683860373224, guid: 4383b01bdb6cc8447b10693b82a25e8c, type: 3}
+  sprite: {fileID: 21300000, guid: d645dd7034440544eaf46649d420434b, type: 3}
+  ObjectNames: Graphic Card

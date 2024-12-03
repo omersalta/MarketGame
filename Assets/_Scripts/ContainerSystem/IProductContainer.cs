@@ -2,9 +2,9 @@
 {
     public interface IProductContainer
     {
-        public void AddProduct(Product product);
-        
         public void RomoveProduct(Product product);
+        
+        public void AddProduct(Product product);
         
         public bool IsEmpty();
         

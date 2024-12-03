@@ -4,7 +4,8 @@ namespace _Scripts.ContainerSystem
 {
     public interface IHoldable : IInteractable
     {
-        public void OnHold(Player player);
-        public void OnDrop(Player player);
+        public void SetHolder(IHolder holder);
+        public IHolder GetHolder();
+        public bool HasHolder();
     }
 }
