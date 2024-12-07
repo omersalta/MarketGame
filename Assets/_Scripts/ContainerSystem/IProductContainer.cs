@@ -12,6 +12,9 @@
 
         public Product TakeFirstProduct();
     
-        public void ClearMarketObjects();
+        public void ClearProducts();
+
+        public Product GetProduct (ProductSO productData);
+        
     }
 }

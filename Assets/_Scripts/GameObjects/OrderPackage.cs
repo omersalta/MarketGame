@@ -2,21 +2,20 @@
 using System.Collections.Generic;
 using _Scripts.ContainerSystem;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace _Scripts.GameObjects
 {
     public class OrderPackage : BaseHoldableContainer
     {
-        public List<ProductType> ProductTypes;
-        
+        public List<ProductType> ProductTypesIncluded;
+
         private void Start()
         {
             List<Product> productsInPackage = new List<Product>();
             
-            if (ProductTypes != null)
+            if (ProductTypesIncluded != null)
             {
-                foreach (ProductType productType in ProductTypes)
+                foreach (ProductType productType in ProductTypesIncluded)
                 {
                     if (productType.Quantity > 0 && productType.Quantity < int.MaxValue)
                     {
@@ -34,10 +33,14 @@ namespace _Scripts.GameObjects
                     }
                     
                 }
-                
             }
-                
-            Initialize(productsInPackage.Count,productsInPackage,null);
+            
+            Initialize(productsInPackage);
+        }
+
+        private void Initialize(List<Product> productsInPackage)
+        {
+            base.Initialize(productsInPackage.Count,productsInPackage,null);
         }
     }
     

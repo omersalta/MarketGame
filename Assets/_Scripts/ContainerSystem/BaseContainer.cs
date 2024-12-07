@@ -90,9 +90,22 @@ namespace _Scripts.ContainerSystem
             return null;
         }
         
-        public void ClearMarketObjects()
+        public void ClearProducts()
         {
             _products.Clear();
+        }
+        public Product GetProduct(ProductSO productData)
+        {
+            Product product = _products.Find(product => product.GetProductSO() == productData);
+            if (product != null)
+            {
+                RomoveProduct(product);
+                return product;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

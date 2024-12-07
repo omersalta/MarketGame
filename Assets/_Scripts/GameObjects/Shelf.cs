@@ -1,11 +1,12 @@
 ﻿using System;
 using _Scripts._Player;
 using _Scripts.ContainerSystem;
+using _Scripts.Customer;
 using UnityEngine;
 
 namespace _Scripts
 {
-    public class Shelf : BaseContainer,IInteractable
+    public class Shelf : BaseContainer,IInteractable,ICustomerShelf
     {
         [SerializeField] protected int maxCount;
         
@@ -73,7 +74,13 @@ namespace _Scripts
         {
             return true;
         }
-
-
+        public Product TakeProduct(ProductSO productData)
+        {
+            return GetProduct(productData);
+        }
+        public bool IsThereProduct(ProductSO productData)
+        {
+            return TakeProduct(productData) != null;
+        }
     }
 }

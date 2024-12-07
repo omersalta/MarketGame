@@ -75,6 +75,7 @@ namespace _Scripts._Player
                     CurrentHolded.SetHolder(null);
                     _currentHolded = null;
                 }
+                
                 else
                 {
                     Debug.LogWarning("CurrentHolded already has not a holder");
